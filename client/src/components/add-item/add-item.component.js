@@ -1,5 +1,18 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import Select from 'react-select'
+
+const weightUnits = [
+    { value: "oz", label: "oz"},
+    { value: "lbs", label: "lbs"},
+    { value: "g", label: "g"},
+    { value: "kg", label: "kg"},
+];
+
+const customControlStyles = base => ({
+    ...base,
+    width: 80,
+});
 
 export default class AddItem extends Component {
     constructor(props) {
@@ -15,7 +28,7 @@ export default class AddItem extends Component {
         this.state = {
             name: '',
             weight: 0,
-            weight_units: 'g',
+            weight_units: weightUnits[0],
             href: '',
             price: 0
         }
@@ -34,11 +47,10 @@ export default class AddItem extends Component {
         console.log(e);
     }
 
-    onChangeWeightUnits(e) {
+    onChangeWeightUnits(val) {
         this.setState({
-            weight_units: e.target.value
+            weight_units: val
         });
-        console.log(e);
     }
 
     onChangePrice(e) {
@@ -68,7 +80,7 @@ export default class AddItem extends Component {
         let newItem = {
             name: this.state.name,
             weight: this.state.weight,
-            weight_units: this.state.weight_units,
+            weight_units: this.state.weight_units.value,
             href: this.state.href,
             price: this.state.price
         }
@@ -87,7 +99,7 @@ export default class AddItem extends Component {
         this.setState({
             name: '',
             weight: 0,
-            weight_units: 'g',
+            weight_units: weightUnits[0],
             href: '',
             price: 0
         })
@@ -112,16 +124,10 @@ export default class AddItem extends Component {
                         <div className="form-group">
                             <label>Weight</label>
                             <div className="input-group">
-                                <input type="number" min="0" step="0.01" data-number-to-fixed="2" className="form-control" value={this.state.weight} onChange={this.onChangeWeight}></input>
-                                <div className="input-group-append">
-                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {this.state.weight_units}
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                        <button class="dropdown-item" type="button" value="g" onClick={this.onChangeWeightUnits}>g</button>
-                                        <button class="dropdown-item" type="button" value="kg" onClick={this.onChangeWeightUnits}>kg</button>
-                                        <button class="dropdown-item" type="button" value="oz" onClick={this.onChangeWeightUnits}>oz</button>
-                                        <button class="dropdown-item" type="button" value="lbs" onClick={this.onChangeWeightUnits}>lbs</button>
+                                <input type="number" min="0" step="0.1" data-number-to-fixed="1" className="form-control" value={this.state.weight} onChange={this.onChangeWeight}></input>
+                                <div className="input-group-append input-group-select">
+                                    <div>
+                                        <Select value={this.state.weight_units} className="form-select" styles={{control: customControlStyles}} onChange={this.onChangeWeightUnits} options={weightUnits}/>
                                     </div>
                                 </div>
                             </div>

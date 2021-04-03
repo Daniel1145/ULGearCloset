@@ -5,9 +5,10 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import SheltersList from "./components/shelter-list.component"
 import ShoesList from "./components/shoes-list.component"
 import BackpacksList from "./components/backpacks-list.component";
-import AddBackpacks from "./components/add-item/add-backpack.component";
-import AddShelters from "./components/add-item/add-shelter.component";
-import AddShoes from "./components/add-item/add-shoes.component";
+import AddBackpack from "./components/add-item/add-backpack.component";
+import AddShelter from "./components/add-item/add-shelter.component";
+import AddShoe from "./components/add-item/add-shoes.component";
+import EditBackpack from "./components/edit-item/edit-backpack.component"
 
 class App extends Component {
   render() {
@@ -45,9 +46,9 @@ class App extends Component {
           <Route path="/shelters" component={SheltersList} />
           <Route path="/shoes" component={ShoesList} />
           <Route path="/backpacks" component={BackpacksList} />
-          <Route path="/add/shelters" component={AddShelters} />
-          <Route path="/add/shoes" component={AddShoes} />
-          <Route path="/add/backpacks" component={AddBackpacks} />
+          <Route path="/add/shelters" component={AddShelter} />
+          <Route path="/add/shoes" component={AddShoe} />
+          <Route path="/add/backpacks" component={AddBackpack} />
         </div>
       </Router>
     );

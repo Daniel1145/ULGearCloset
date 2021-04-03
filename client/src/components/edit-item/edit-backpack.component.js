@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import AddItem from './add-item.component';
+import EditItem from './edit-item.component';
 import Select from 'react-select'
+import axios from 'axios';
 
 const materials = [
     { value: "X-Pac VX21", label: "X-Pac VX21"},
@@ -22,7 +23,7 @@ const hipbelts = [
 ]
 const emptySelect = { value: "", label: ""}
 
-export default class AddBackpack extends Component {
+export default class EditBackpack extends Component {
     constructor(props) {
         super(props);
 
@@ -31,7 +32,7 @@ export default class AddBackpack extends Component {
         this.onChangeVolume = this.onChangeVolume.bind(this);
         this.onChangeFrame = this.onChangeFrame.bind(this);
         this.onChangeHipbelt = this.onChangeHipbelt.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.loadState = this.loadState.bind(this);
 
         this.state = {
             material: emptySelect,
@@ -40,6 +41,22 @@ export default class AddBackpack extends Component {
             frame: emptySelect,
             hipbelt: emptySelect,
         }
+    }
+
+    loadState() {
+        console.log(this.props);
+        this.setState({
+            // name: this.props.data.name,
+            // weight: this.props.data.weight,
+            // weight_units: { value: this.props.data.weight_units, label: this.props.data.weight_units },
+            // href: this.props.data.href,
+            // price: this.props.data.price,
+            material: { value: this.props.data.material, label: this.props.data.material },
+            material_other: !materials.map((curr) => {return curr.value}).includes(this.props.data.material),
+            volume: this.props.data.volume,
+            frame: { value: this.props.data.frame, label: this.props.data.frame },
+            hipbelt: { value: this.props.data.hipbelt, label: this.props.data.hipbelt }
+        });
     }
 
     onChangeMaterial(val) {
@@ -81,16 +98,6 @@ export default class AddBackpack extends Component {
         });
     }
 
-    onSubmit(e) {
-        this.setState({
-            material: emptySelect,
-            material_other: false,
-            volume: 0,
-            frame: emptySelect,
-            hipbelt: emptySelect,
-        })
-    }
-
     formatState() {
         return {
             material: this.state.material.value,
@@ -102,7 +109,7 @@ export default class AddBackpack extends Component {
 
     render() {
         return (
-            <AddItem type="Backpack" childState={this.formatState()} onSubmit={this.onSubmit}>
+            <EditItem type="Backpack" childState={this.formatState()} data={this.props.data} onSubmit={this.onSubmit} loadState={this.loadState}>
                 <div className="form-group">
                     <label>Volume</label>
                     <div className="input-group">
@@ -131,7 +138,7 @@ export default class AddBackpack extends Component {
                         <Select value={this.state.hipbelt} className="form-select mb-3" onChange={this.onChangeHipbelt} options={hipbelts}/>
                     </div>
                 </div>
-            </AddItem>
+            </EditItem>
         )
     }
 }
