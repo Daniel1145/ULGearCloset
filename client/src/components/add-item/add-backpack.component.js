@@ -1,116 +1,122 @@
 import React, {Component} from 'react';
 import AddItem from './add-item.component';
+import Select from 'react-select'
+
+const materials = [
+    { value: "X-Pac VX21", label: "X-Pac VX21"},
+    { value: "X-Pac VX07", label: "X-Pac VX07"},
+    { value: "Liteskin LS07", label: "Liteskin LS07"},
+    { value: "200D Ripstop Nylon", label: "200D Ripstop Nylon"},
+    { value: "DCF", label: "DCF"},
+    { value: "Other", label: "Other"}
+];
+const frames = [
+    { value: "Frame", label: "Frame"},
+    { value: "Frameless", label: "Frameless"},
+    { value: "Removable", label: "Removable"}
+];
+const hipbelts = [
+    { value: "Hipbelt", label: "Hipbelt"},
+    { value: "No Hipbelt", label: "No Hipbelt"},
+    { value: "Removable", label: "Removable"}
+]
+const emptySelect = { value: "", label: ""}
 
 export default class AddBackpack extends Component {
     constructor(props) {
         super(props);
 
-        this.onChangeItemName = this.onChangeItemName.bind(this);
-        this.onChangeItemWeight = this.onChangeItemWeight.bind(this);
-        this.onChangeItemWeightUnits = this.onChangeItemWeightUnits.bind(this);
-        this.onChangeItemPrice = this.onChangeItemPrice.bind(this);
-        this.onChangeItemMaterial = this.onChangeItemMaterial.bind(this);
-        this.onChangeItemMaterialOther = this.onChangeItemMaterialOther.bind(this);
-        this.onChangeItemVolume = this.onChangeItemVolume.bind(this);
+        this.onChangeMaterial = this.onChangeMaterial.bind(this);
+        this.onChangeMaterialOther = this.onChangeMaterialOther.bind(this);
+        this.onChangeVolume = this.onChangeVolume.bind(this);
+        this.onChangeFrame = this.onChangeFrame.bind(this);
+        this.onChangeHipbelt = this.onChangeHipbelt.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
-            item_type: '',
-            item_name: '',
-            item_weight: 0,
-            item_weight_units: 'g',
-            item_price: 0,
-            item_material: '',
-            item_material_other: false,
-            item_volume: 0
+            material: emptySelect,
+            material_other: false,
+            volume: 0,
+            frame: emptySelect,
+            hipbelt: emptySelect,
         }
     }
 
-    onChangeItemName(e) {
+    onChangeMaterial(val) {
+        if (val.value === "Other") {
+            this.setState({
+                material: emptySelect,
+                material_other: true
+            })
+        } else {
+            this.setState({
+                material: val,
+                material_other: false
+            });
+        }
+
+    }
+
+    onChangeMaterialOther(e) {
         this.setState({
-            item_name: e.target.value
+            material: { label: e.target.value, value: e.target.value}
         });
     }
 
-    onChangeItemWeight(e) {
+    onChangeVolume(e) {
         this.setState({
-            item_weight: e.target.value
-        });
-        console.log(e);
-    }
-
-    onChangeItemWeightUnits(e) {
-        this.setState({
-            item_weight_units: e.target.value
-        });
-        console.log(e);
-    }
-
-    onChangeItemPrice(val) {
-        this.setState({
-            item_price: (val) ? val : 0
+            material: e.target.value
         });
     }
 
-    onChangeItemMaterial(e) {
+    onChangeFrame(val) {
         this.setState({
-            item_material: e.target.value,
-            item_material_other: e.target.value === "Other"
+            frame: val
         });
     }
 
-    onChangeItemMaterialOther(e) {
+    onChangeHipbelt(val) {
         this.setState({
-            item_material: e.target.value
-        });
-    }
-
-    onChangeItemVolume(e) {
-        this.setState({
-            item_material: e.target.value
+            hipbelt: val
         });
     }
 
     onSubmit(e) {
-        e.preventDefault();
-
-        console.log('Form Submitted:');
-        console.log(`Item Name: ${this.state.item_name}`)
-        console.log(`Item Weight: ${this.state.item_weight}`)
-        console.log(`Item Price: ${this.state.item_price}`)
-
         this.setState({
-            item_name: '',
-            item_weight: 0,
-            item_price: 0
+            material: emptySelect,
+            material_other: false,
+            volume: 0,
+            frame: emptySelect,
+            hipbelt: emptySelect,
         })
+    }
+
+    formatState() {
+        return {
+            material: this.state.material.value,
+            volume: 0,
+            frame: this.state.frame.value,
+            hipbelt: this.state.hipbelt.value,
+        }
     }
 
     render() {
         return (
-            <div style={{marginTop: 20}}>
-                <h3>Add New Backpack</h3>
-                <form onSubmit={this.onSubmit}>
-                    <AddItem onChangeItemName={this.onChangeItemName} onChangeItemWeight={this.onChangeItemWeight} onChangeItemWeightUnits={this.onChangeItemWeightUnits} onChangeItemPrice={this.onChangeItemPrice} parentState={this.state}/>
-                    <div className="form-group">
-                        <label>Material</label>
-                        <div>
-                            <select className="form-select mb-3" onChange={this.onChangeItemMaterial} id="materialSelect">
-                                <option value="VX21">X-Pac VX21</option>
-                                <option value="LS07">Liteskin LS07</option>
-                                <option value="VX07">X-Pac VX07</option>
-                                <option value="200D Nylon">200D Ripstop Nylon</option>
-                                <option value="DCF">DCF</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <input type="text" className="form-control" value={this.state.item_material_other ? this.state.item_material : ''} onChange={this.onChangeItemMaterialOther} disabled={!this.state.item_material_other} placeholder="Other"></input>
-                        </div>
-                    </div>
-                    <div className="form-group" style={{marginTop: 30}}>
-                        <input type="submit" value="Add Backpack" className='btn btn-primary'/>
-                    </div>
-                </form>
-            </div>
+            <AddItem type="Backpack" childState={this.formatState()} onSubmit={this.onSubmit}>
+                <label>Material</label>
+                <div>
+                    <Select value={this.state.material} className="mb-3" onChange={this.onChangeMaterial} options={materials} required/>
+                    <input type="text" className="form-control mb-3" value={this.state.material_other ? this.state.material.value : ''} onChange={this.onChangeMaterialOther} disabled={!this.state.material_other} placeholder="Other"></input>
+                </div>
+                <label>Frame</label>
+                <div>
+                    <Select value={this.state.frame} className="form-select mb-3" onChange={this.onChangeFrame} options={frames}/>
+                </div>
+                <label>Hipbelt</label>
+                <div>
+                    <Select value={this.state.hipbelt} className="form-select mb-3" onChange={this.onChangeHipbelt} options={hipbelts}/>
+                </div>
+            </AddItem>
         )
     }
 }
