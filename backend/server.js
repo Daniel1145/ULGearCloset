@@ -50,15 +50,17 @@ backpacksRoutes.route('/update/:id').post((req, res) => {
         if (!backpack)
             res.status(404).send('backpack not found');
         else
+            backpack.manufacturer = req.body.manufacturer;
             backpack.name = req.body.name;
             backpack.weight = req.body.weight;
             backpack.weight_units = req.body.weight_units;
             backpack.price = req.body.price;
-            backpack.material = req.body.material;
+            backpack.materials = req.body.materials;
             backpack.volume = req.body.volume;
             backpack.frame = req.body.frame;
             backpack.hipbelt = req.body.hipbelt;
             backpack.href = req.body.href;
+            backpack.max_load = req.body.max_load;
 
             backpack.save().then(backpack => {
                 res.status(200).json('Backpack updated');

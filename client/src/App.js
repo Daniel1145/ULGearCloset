@@ -8,13 +8,12 @@ import BackpacksList from "./components/backpacks-list.component";
 import AddBackpack from "./components/add-item/add-backpack.component";
 import AddShelter from "./components/add-item/add-shelter.component";
 import AddShoe from "./components/add-item/add-shoes.component";
-import EditBackpack from "./components/edit-item/edit-backpack.component"
 
 class App extends Component {
   render() {
     return (
       <Router>
-        <div className="container">
+        <div className="container-fluid px-0">
           
           <nav className="navbar navbar-expand-md navbar-light bg-light">
             <Link to="/" className="navbar-brand">Gear Closet</Link>

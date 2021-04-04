@@ -2,12 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import Select from 'react-select'
 
-const weightUnits = [
-    { value: "oz", label: "oz"},
-    { value: "lbs", label: "lbs"},
-    { value: "g", label: "g"},
-    { value: "kg", label: "kg"},
-];
+import { WeightUnits } from '../backpacks-helper.component';
 
 const customControlStyles = base => ({
     ...base,
@@ -18,6 +13,7 @@ export default class AddItem extends Component {
     constructor(props) {
         super(props);
 
+        this.onChangeManufacturer = this.onChangeManufacturer.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeWeight = this.onChangeWeight.bind(this);
         this.onChangeWeightUnits = this.onChangeWeightUnits.bind(this);
@@ -26,12 +22,19 @@ export default class AddItem extends Component {
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
+            manufacturer: '',
             name: '',
             weight: 0,
-            weight_units: weightUnits[0],
+            weight_units: WeightUnits[0],
             href: '',
             price: 0
         }
+    }
+
+    onChangeManufacturer(e) {
+        this.setState({
+            manufacturer: e.target.value
+        });
     }
 
     onChangeName(e) {
@@ -69,15 +72,8 @@ export default class AddItem extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        console.log('Form Submitted:');
-        console.log(`Item Name: ${this.state.name}`)
-        console.log(`Item Weight: ${this.state.weight}`)
-        console.log(`Item Price: ${this.state.price}`)
-        for (const [key, value] of Object.entries(this.props.childState)) {
-            console.log(`${key}: ${value}`);
-        }
-
         let newItem = {
+            manufacturer: this.state.manufacturer,
             name: this.state.name,
             weight: this.state.weight,
             weight_units: this.state.weight_units.value,
@@ -97,9 +93,10 @@ export default class AddItem extends Component {
             });
 
         this.setState({
+            manufacturer: '',
             name: '',
             weight: 0,
-            weight_units: weightUnits[0],
+            weight_units: WeightUnits[0],
             href: '',
             price: 0
         })
@@ -109,10 +106,14 @@ export default class AddItem extends Component {
 
     render() {
         return (
-            <div style={{marginTop: 20}}>
+            <div style={{marginTop: 20}} className='px-5'>
                 <h3>Add New {this.props.type}</h3>
                 <form onSubmit={this.onSubmit}>
                     <div>
+                        <div className="form-group">
+                            <label>Manufacturer</label>
+                            <input type="text" className="form-control" value={this.state.manufacturer} onChange={this.onChangeManufacturer}></input>
+                        </div>
                         <div className="form-group">
                             <label>Name</label>
                             <input type="text" className="form-control" value={this.state.name} onChange={this.onChangeName}></input>
@@ -127,7 +128,7 @@ export default class AddItem extends Component {
                                 <input type="number" min="0" step="0.1" data-number-to-fixed="1" className="form-control" value={this.state.weight} onChange={this.onChangeWeight}></input>
                                 <div className="input-group-append input-group-select">
                                     <div>
-                                        <Select value={this.state.weight_units} className="form-select" styles={{control: customControlStyles}} onChange={this.onChangeWeightUnits} options={weightUnits}/>
+                                        <Select value={this.state.weight_units} className="form-select" styles={{control: customControlStyles}} onChange={this.onChangeWeightUnits} options={WeightUnits}/>
                                     </div>
                                 </div>
                             </div>

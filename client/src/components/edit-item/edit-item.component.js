@@ -1,14 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Select from 'react-select'
-import { Modal, Button } from 'react-bootstrap';
-
-const weightUnits = [
-    { value: "oz", label: "oz"},
-    { value: "lbs", label: "lbs"},
-    { value: "g", label: "g"},
-    { value: "kg", label: "kg"},
-];
+import { Modal } from 'react-bootstrap';
+import { WeightUnits } from '../backpacks-helper.component';
 
 const customControlStyles = base => ({
     ...base,
@@ -19,6 +13,7 @@ export default class EditItem extends Component {
     constructor(props) {
         super(props);
 
+        this.onChangeManufacturer = this.onChangeManufacturer.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeWeight = this.onChangeWeight.bind(this);
         this.onChangeWeightUnits = this.onChangeWeightUnits.bind(this);
@@ -29,9 +24,10 @@ export default class EditItem extends Component {
         this.handleShow = this.handleShow.bind(this);
 
         this.state = {
+            manufacturer: '',
             name: '',
             weight: 0,
-            weight_units: weightUnits[0],
+            weight_units: WeightUnits[0],
             href: '',
             price: 0,
             show: false
@@ -39,13 +35,19 @@ export default class EditItem extends Component {
     }
 
     loadState() {
-        console.log(this.props);
         this.setState({
+            manufacturer: this.props.data.manufacturer,
             name: this.props.data.name,
             weight: this.props.data.weight,
             weight_units: { value: this.props.data.weight_units, label: this.props.data.weight_units },
             href: this.props.data.href,
             price: this.props.data.price,
+        });
+    }
+
+    onChangeManufacturer(e) {
+        this.setState({
+            manufacturer: e.target.value
         });
     }
 
@@ -96,26 +98,19 @@ export default class EditItem extends Component {
     }
 
     onSubmit(e) {
+        console.log("test");
         e.preventDefault();
 
-        console.log('Form Submitted:');
-        console.log(`Item Name: ${this.state.name}`)
-        console.log(`Item Weight: ${this.state.weight}`)
-        console.log(`Item Price: ${this.state.price}`)
-        for (const [key, value] of Object.entries(this.props.childState)) {
-            console.log(`${key}: ${value}`);
-        }
-
         let updatedItem = {
+            manufacturer: this.state.manufacturer,
             name: this.state.name,
             weight: this.state.weight,
             weight_units: this.state.weight_units.value,
             href: this.state.href,
             price: this.state.price
         }
-        for (const [key, value] of Object.entries(this.props.childState)) {
-            updatedItem = {...updatedItem, [key]: value};
-        }
+        Object.assign(updatedItem, this.props.childState);
+        console.log(updatedItem);
 
         axios.post('http://10.0.0.202:4000/backpacks/update/'+this.props.data._id, updatedItem)
             .then(res => {
@@ -132,9 +127,9 @@ export default class EditItem extends Component {
     render() {
         return (
             <>
-                <Button variant="primary" onClick={this.handleShow}>
+                <button className="btn btn-link py-0 px-0" onClick={this.handleShow}>
                     Edit
-                </Button>
+                </button>
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Update Existing {this.props.type}</Modal.Title>
@@ -142,6 +137,10 @@ export default class EditItem extends Component {
                     <Modal.Body>
                         <form onSubmit={this.onSubmit}>
                             <div>
+                                <div className="form-group">
+                                    <label>Manufacturer</label>
+                                    <input type="text" className="form-control" value={this.state.manufacturer} onChange={this.onChangeManufacturer}></input>
+                                </div>
                                 <div className="form-group">
                                     <label>Name</label>
                                     <input type="text" className="form-control" value={this.state.name} onChange={this.onChangeName}></input>
@@ -156,7 +155,7 @@ export default class EditItem extends Component {
                                         <input type="number" min="0" step="0.1" data-number-to-fixed="1" className="form-control" value={this.state.weight} onChange={this.onChangeWeight}></input>
                                         <div className="input-group-append input-group-select">
                                             <div>
-                                                <Select value={this.state.weight_units} className="form-select" styles={{control: customControlStyles}} onChange={this.onChangeWeightUnits} options={weightUnits}/>
+                                                <Select value={this.state.weight_units} className="form-select" styles={{control: customControlStyles}} onChange={this.onChangeWeightUnits} options={WeightUnits}/>
                                             </div>
                                         </div>
                                     </div>

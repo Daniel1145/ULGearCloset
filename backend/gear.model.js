@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let Backpacks = new Schema({
+    manufacturer: {
+        type: String
+    },
     name: {
         type: String
     },
@@ -17,7 +20,7 @@ let Backpacks = new Schema({
     href: {
         type: String
     },
-    material: {
+    materials: {
         type: String
     },
     volume: {
@@ -28,6 +31,9 @@ let Backpacks = new Schema({
     },
     hipbelt: {
         type: String
+    },
+    max_load: {
+        type: Number
     }
 });
 
