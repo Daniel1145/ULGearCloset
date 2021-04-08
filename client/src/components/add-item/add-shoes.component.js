@@ -1,77 +1,116 @@
 import React, {Component} from 'react';
+import Select from 'react-select'
+
 import AddItem from './add-item.component';
 
 export default class AddShoes extends Component {
     constructor(props) {
         super(props);
 
-        this.onChangeName = this.onChangeName.bind(this);
-        this.onChangeWeight = this.onChangeWeight.bind(this);
-        this.onChangeWeightUnits = this.onChangeWeightUnits.bind(this);
-        this.onChangePrice = this.onChangePrice.bind(this);
+        this.onChangeMaterials = this.onChangeMaterials.bind(this);
+        this.onChangeVolume = this.onChangeVolume.bind(this);
+        this.onChangeFrame = this.onChangeFrame.bind(this);
+        this.onChangeHipbelt = this.onChangeHipbelt.bind(this);
+        this.onChangeMaxLoad = this.onChangeMaxLoad.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
-            type: '',
-            name: '',
-            weight: 0,
-            weight_units: 'g',
-            price: 0
+            materials: "",
+            volume: 0,
+            frame: EmptySelect,
+            hipbelt: EmptySelect,
+            max_load: 0
         }
     }
 
-    onChangeName(e) {
+    onChangeMaterials(e) {
         this.setState({
-            name: e.target.value
+            materials: e.target.value
         });
     }
 
-    onChangeWeight(e) {
+    onChangeVolume(e) {
         this.setState({
-            weight: e.target.value
+            volume: e.target.value
         });
-        console.log(e);
     }
 
-    onChangeWeightUnits(e) {
+    onChangeFrame(val) {
         this.setState({
-            weight_units: e.target.value
+            frame: val
         });
-        console.log(e);
     }
 
-    onChangePrice(val) {
+    onChangeHipbelt(val) {
         this.setState({
-            price: (val) ? val : 0
+            hipbelt: val
+        });
+    }
+
+    onChangeMaxLoad(e) {
+        this.setState({
+            max_load: e.target.value
         });
     }
 
     onSubmit(e) {
-        e.preventDefault();
-
-        console.log('Form Submitted:');
-        console.log(`Item Name: ${this.state.name}`)
-        console.log(`Item Weight: ${this.state.weight}`)
-        console.log(`Item Price: ${this.state.price}`)
-
         this.setState({
-            name: '',
-            weight: 0,
-            price: 0
+            materials: EmptySelect,
+            volume: 0,
+            frame: EmptySelect,
+            hipbelt: EmptySelect,
+            max_load: 0
         })
+    }
+
+    formatState() {
+        return {
+            materials: this.state.materials,
+            volume: this.state.volume,
+            frame: this.state.frame.value,
+            hipbelt: this.state.hipbelt.value,
+            max_load: this.state.max_load
+        }
     }
 
     render() {
         return (
-            <div style={{marginTop: 20}}>
-                <h3>Add New Shoes</h3>
-                <form onSubmit={this.onSubmit}>
-                    <AddItem onChangeName={this.onChangeName} onChangeWeight={this.onChangeWeight} onChangeWeightUnits={this.onChangeWeightUnits} onChangePrice={this.onChangePrice} parentState={this.state}/>
-                    <div className="form-group" style={{marginTop: 30}}>
-                        <input type="submit" value="Add Shoes" className='btn btn-primary'/>
+            <AddItem type="Backpack" childState={this.formatState()} onSubmit={this.onSubmit}>
+                <div className="form-group">
+                    <label>Volume</label>
+                    <div className="input-group">
+                        <input type="number" min="0" step="0.1" data-number-to-fixed="1" className="form-control" value={this.state.volume} onChange={this.onChangeVolume}></input>
+                        <div class="input-group-append">
+                            <span class="input-group-text">L</span>
+                        </div>
+                    </div>    
+                </div>
+                <div className="form-group">
+                    <label>Materials</label>
+                    <input type="text" className="form-control" value={this.state.materials} onChange={this.onChangeMaterials}></input>
+                </div>
+                <div className="form-group">
+                    <label>Frame</label>
+                    <div>
+                        <Select value={this.state.frame} className="form-select mb-3" onChange={this.onChangeFrame} options={Frames}/>
                     </div>
-                </form>
-            </div>
+                </div>
+                <div className="form-group">
+                    <label>Hipbelt</label>
+                    <div>
+                        <Select value={this.state.hipbelt} className="form-select mb-3" onChange={this.onChangeHipbelt} options={Hipbelts}/>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label>Max Load</label>
+                    <div className="input-group">
+                        <input type="number" min="0" step="0.1" data-number-to-fixed="1" className="form-control" value={this.state.max_load} onChange={this.onChangeMaxLoad}></input>
+                        <div className="input-group-append">
+                            <span class="input-group-text">lbs</span>
+                        </div>
+                    </div>
+                </div>
+            </AddItem>
         )
     }
 }

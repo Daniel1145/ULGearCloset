@@ -8,16 +8,13 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 import EditBackpack from './edit-item/edit-backpack.component';
 import TextFilter from './list-filters/text-filter.component';
-import MaterialFilter from './list-filters/material-filter.component';
-import FrameFilter from './list-filters/frame-filter.component';
-import HipbeltFilter from './list-filters/hipbelt-filter.component';
-import {PriceFilter, filterByPrice} from './list-filters/price-filter.component';
-import {VolumeFilter, filterByVolume} from './list-filters/volume-filter.component';
-import {MaxLoadFilter, filterByMaxLoad} from './list-filters/maxload-filter.component';
-import {WeightFilter, filterByWeight, convertWeight} from './list-filters/weight-filter.component';
-import {multiExactFilter, WeightUnits, EmptySelect} from './backpacks-helper.component';
+import MultiselectFilter from './list-filters/multiselect-filter.component';
+import {multiExactFilter, Frames, Hipbelts} from './backpacks-helper.component';
+import {WeightUnits, convertWeight} from './helpers'
+import { MinMaxFilter, minmaxFilter } from './list-filters/minmax-filter.component';
 
-const Units = [...WeightUnits, {value: "", label: "No Conversion"}];
+const Units = [...WeightUnits, {value: "", label: "default"}];
+let Materials = [];
 
 export default class BackpacksList extends Component {
 
@@ -28,13 +25,26 @@ export default class BackpacksList extends Component {
 
         this.state = {
             backpacks: [],
-            weight_unit: EmptySelect
+            weight_unit: {value: "oz", label: "oz"}
         };
     }
 
     componentDidMount() {
         axios.get('http://10.0.0.202:4000/backpacks')
             .then(res => {
+                let materialsSet = new Set();
+                let materials = [];
+                res.data.forEach((item) => {
+                    let currMaterials = item.materials.split(', ');
+                    currMaterials.forEach((material) => {
+                        if (!materialsSet.has(material)) {
+                            materials.push({value: material, label: material});
+                            materialsSet.add(material);
+                        }
+                    })
+                });
+                Materials = materials;
+
                 this.setState({
                     backpacks: res.data
                 })
@@ -71,7 +81,7 @@ export default class BackpacksList extends Component {
                 type: FILTER_TYPES.MULTISELECT
             }), 
             filterRenderer: (onFilter, column) =>
-                <MaterialFilter onFilter={ onFilter } column = { column } />,
+                <MultiselectFilter onFilter={ onFilter } column={ column } list={ Materials }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
@@ -82,10 +92,12 @@ export default class BackpacksList extends Component {
             text: "Frame", 
             sort: true,
             filter: customFilter({
-                onFilter: multiExactFilter
-            }), 
+                onFilter: (filterVal, data) => {
+                    return multiExactFilter(filterVal, data, "frame");
+                }
+            }),
             filterRenderer: (onFilter, column) =>
-                <FrameFilter onFilter={ onFilter } column = { column } />,
+                <MultiselectFilter onFilter={ onFilter } column={ column } list={ Frames }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
@@ -96,10 +108,12 @@ export default class BackpacksList extends Component {
             text: "Hipbelt", 
             sort: true,
             filter: customFilter({
-                onFilter: multiExactFilter
+                onFilter: (filterVal, data) => {
+                    return multiExactFilter(filterVal, data, "hipbelt");
+                }
             }), 
             filterRenderer: (onFilter, column) =>
-                <HipbeltFilter onFilter={ onFilter } column = { column } />,
+                <MultiselectFilter onFilter={ onFilter } column={ column } list={ Hipbelts }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
@@ -115,15 +129,20 @@ export default class BackpacksList extends Component {
             ), 
             sort: true,
             filter: customFilter({
-                onFilter: filterByVolume
+                onFilter: (filterVal, data) => {
+                    return minmaxFilter(filterVal, data, "volume");
+                }
             }), 
             filterRenderer: (onFilter, column) =>
-                <VolumeFilter onFilter={ onFilter } column = { column } />,
+                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "volume" }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
                 { filterElement }
-            </div>
+            </div>,
+            headerStyle: (colum, colIndex) => {
+                return { width: '150px' };
+            }
         }, {
             dataField: "max_load", 
             text: "Max Load", 
@@ -134,15 +153,20 @@ export default class BackpacksList extends Component {
             ), 
             sort: true,
             filter: customFilter({
-                onFilter: filterByMaxLoad
+                onFilter: (filterVal, data) => {
+                    return minmaxFilter(filterVal, data, "max_load");
+                }
             }), 
             filterRenderer: (onFilter, column) =>
-                <MaxLoadFilter onFilter={ onFilter } column = { column } />,
+                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "max_load" }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
                 { filterElement }
-            </div>
+            </div>,
+            headerStyle: (colum, colIndex) => {
+                return { width: '150px' };
+            }
         }, {
             dataField: "price", 
             text: "Price", 
@@ -153,15 +177,20 @@ export default class BackpacksList extends Component {
             ), 
             sort: true,
             filter: customFilter({
-                onFilter: filterByPrice
+                onFilter: (filterVal, data) => {
+                    return minmaxFilter(filterVal, data, "price");
+                }
             }), 
             filterRenderer: (onFilter, column) =>
-                <PriceFilter onFilter={ onFilter } column = { column } />,
+                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "price" }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
                 { filterElement }
-            </div>
+            </div>,
+            headerStyle: (colum, colIndex) => {
+                return { width: '150px' };
+            }
         }, {
             dataField: "weight", 
             text: "Weight", 
@@ -182,19 +211,19 @@ export default class BackpacksList extends Component {
             formatExtraData: this.state.weight_unit.value,
             sort: true,
             filter: customFilter({
-                onFilter: filterByWeight
+                onFilter: (filterVal, data) => {
+                    return minmaxFilter(filterVal, data, "weight");
+                }
             }), 
             filterRenderer: (onFilter, column) =>
-                <WeightFilter onFilter={ onFilter } column = { column } />,
+                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "weight" }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } } onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
             } }>
-                <Row className="ml-1">
-                    <Col className='px-0 mt-2'>{ column.text }{ sortElement }</Col>
-                    <Col className='px-3 ml-3'><Select value={this.state.weight_unit} className="mb-2" onChange={this.onChangeWeightUnit} options={Units}/></Col>
-                </Row>
+                <Col className='px-0 mt-2'>{ column.text }{ sortElement }</Col>
+                <Select value={this.state.weight_unit} className="mb-2" onChange={this.onChangeWeightUnit} options={Units}/>
                 { filterElement }
             </div>,
             sortFunc: (a, b, order, dataField, rowA, rowB) => {
@@ -204,6 +233,9 @@ export default class BackpacksList extends Component {
                     return bGrams - aGrams;
                 }
                 return aGrams - bGrams;
+            },
+            headerStyle: (colum, colIndex) => {
+                return { width: '150px' };
             }
         }, {
             dataField: "href", 
@@ -215,7 +247,7 @@ export default class BackpacksList extends Component {
             ),
             headerStyle: (colum, colIndex) => {
                 return { width: '80px' };
-              }
+            }
         }, {
             dataField: "df1", 
             text: "", 
@@ -226,13 +258,13 @@ export default class BackpacksList extends Component {
             ),
             headerStyle: (colum, colIndex) => {
                 return { width: '80px' };
-              }
+            }
         }];
 
         return (
             <div className='px-5'>
                 <h2 className='mb-3 ml-1'>Backpacks</h2>
-                <BootstrapTable bootstrap4 keyField='name' data={ this.state.backpacks } columns={ columns } defaultSorted= { [{dataField: 'name', order: 'desc'}]} filter={ filterFactory() }/>
+                <BootstrapTable bootstrap4 keyField='name' data={ this.state.backpacks } columns={ columns } defaultSorted= { [{dataField: 'manufacturer', order: 'desc'}]} filter={ filterFactory() }/>
             </div>
         )
     }

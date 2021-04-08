@@ -2,11 +2,11 @@ import React, {Component} from "react";
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"
 
-import SheltersList from "./components/shelter-list.component"
+import TentsList from "./components/tents-list.component"
 import ShoesList from "./components/shoes-list.component"
 import BackpacksList from "./components/backpacks-list.component";
 import AddBackpack from "./components/add-item/add-backpack.component";
-import AddShelter from "./components/add-item/add-shelter.component";
+import AddTent from "./components/add-item/add-tent.component";
 import AddShoe from "./components/add-item/add-shoes.component";
 
 class App extends Component {
@@ -20,7 +20,7 @@ class App extends Component {
             <div className="collapse navbar-collapse">
               <ul className="navbar-nav mr-auto">
                 <li className="navbar-item">
-                  <Link to="/shelters" className="nav-link">Shelters</Link>
+                  <Link to="/shelters" className="nav-link">Tents</Link>
                 </li>
                 <li className="navbar-item">
                   <Link to="/shoes" className="nav-link">Shoes</Link>
@@ -34,7 +34,7 @@ class App extends Component {
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <li><Link to="/add/backpacks" className="nav-link">Add Backpack</Link></li>
-                    <li><Link to="/add/shelters" className="nav-link">Add Shelter</Link></li>
+                    <li><Link to="/add/shelters" className="nav-link">Add Tent</Link></li>
                     <li><Link to="/add/shoes" className="nav-link">Add Shoes</Link></li>
                   </div>
                 </li>
@@ -42,10 +42,10 @@ class App extends Component {
             </div>
           </nav>
 
-          <Route path="/shelters" component={SheltersList} />
+          <Route path="/shelters" component={TentsList} />
           <Route path="/shoes" component={ShoesList} />
           <Route path="/backpacks" component={BackpacksList} />
-          <Route path="/add/shelters" component={AddShelter} />
+          <Route path="/add/shelters" component={AddTent} />
           <Route path="/add/shoes" component={AddShoe} />
           <Route path="/add/backpacks" component={AddBackpack} />
         </div>

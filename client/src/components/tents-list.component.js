@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-export default class SheltersList extends Component {
+export default class TentsList extends Component {
     render() {
         return (
             <div>

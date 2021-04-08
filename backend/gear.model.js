@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let Backpacks = new Schema({
+let backpacksSchema = new Schema({
     manufacturer: {
         type: String
     },
@@ -36,5 +36,77 @@ let Backpacks = new Schema({
         type: Number
     }
 });
+let Backpacks = mongoose.model("Backpacks", backpacksSchema, "backpacks");
 
-module.exports = mongoose.model('Backpacks', Backpacks, "backpacks");
+let tentsSchema = new Schema({
+    manufacturer: {
+        type: String
+    },
+    name: {
+        type: String
+    },
+    weight: {
+        type: Number
+    },
+    weight_units: {
+        type: String
+    },
+    price: {
+        type: Number
+    },
+    href: {
+        type: String
+    },
+    wall: {
+        type: String
+    },
+    material: {
+        type: String
+    },
+    min_stakes: {
+        type: Number
+    },
+    max_stakes: {
+        type: Number
+    },
+    length: {
+        type: Number
+    },
+    floor_area: {
+        type: Number
+    },
+    freestanding: {
+        type: String
+    }
+})
+let Tents = mongoose.model("Tents", tentsSchema, "tents")
+
+let shoesSchema = new Schema({
+    manufacturer: {
+        type: String
+    },
+    name: {
+        type: String
+    },
+    weight: {
+        type: Number
+    },
+    weight_units: {
+        type: String
+    },
+    price: {
+        type: Number
+    },
+    href: {
+        type: String
+    },
+    stack: {
+        type: Number
+    },
+    drop: {
+        type: Number
+    }
+})
+let Shoes = mongoose.model("Shoes", tentsSchema, "shoes")
+
+module.exports = {Backpacks: Backpacks, Tents: Tents, Shoes: Shoes};

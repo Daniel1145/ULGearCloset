@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import Select from 'react-select'
 
 import AddItem from './add-item.component';
-import { Frames, Hipbelts, EmptySelect } from '../backpacks-helper.component';
+import { EmptySelect } from '../helpers';
+import BackpackForm from '../item-forms/backpack-form.component';
 
 export default class AddBackpack extends Component {
     constructor(props) {
@@ -77,40 +77,8 @@ export default class AddBackpack extends Component {
     render() {
         return (
             <AddItem type="Backpack" childState={this.formatState()} onSubmit={this.onSubmit}>
-                <div className="form-group">
-                    <label>Volume</label>
-                    <div className="input-group">
-                        <input type="number" min="0" step="0.1" data-number-to-fixed="1" className="form-control" value={this.state.volume} onChange={this.onChangeVolume}></input>
-                        <div class="input-group-append">
-                            <span class="input-group-text">L</span>
-                        </div>
-                    </div>    
-                </div>
-                <div className="form-group">
-                    <label>Materials</label>
-                    <input type="text" className="form-control" value={this.state.materials} onChange={this.onChangeMaterials}></input>
-                </div>
-                <div className="form-group">
-                    <label>Frame</label>
-                    <div>
-                        <Select value={this.state.frame} className="form-select mb-3" onChange={this.onChangeFrame} options={Frames}/>
-                    </div>
-                </div>
-                <div className="form-group">
-                    <label>Hipbelt</label>
-                    <div>
-                        <Select value={this.state.hipbelt} className="form-select mb-3" onChange={this.onChangeHipbelt} options={Hipbelts}/>
-                    </div>
-                </div>
-                <div className="form-group">
-                    <label>Max Load</label>
-                    <div className="input-group">
-                        <input type="number" min="0" step="0.1" data-number-to-fixed="1" className="form-control" value={this.state.max_load} onChange={this.onChangeMaxLoad}></input>
-                        <div className="input-group-append">
-                            <span class="input-group-text">lbs</span>
-                        </div>
-                    </div>
-                </div>
+                <BackpackForm state={this.state} onChangeMaterials={this.onChangeMaterials} onChangeVolume={this.onChangeVolume} 
+                onChangeFrame={this.onChangeFrame} onChangeHipbelt={this.onChangeHipbelt} onChangeMaxLoad={this.onChangeMaxLoad}></BackpackForm>
             </AddItem>
         )
     }
