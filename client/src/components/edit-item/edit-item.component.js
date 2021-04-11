@@ -16,6 +16,7 @@ export default class EditItem extends Component {
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeHref = this.onChangeHref.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onDelete = this.onDelete.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleShow = this.handleShow.bind(this);
 
@@ -93,8 +94,35 @@ export default class EditItem extends Component {
         });
     }
 
+    onDelete(e) {
+        let url;
+        switch (this.props.type) {
+            case "Backpack":
+                url = 'http://10.0.0.202:4000/backpacks/';
+                break;
+            case "Tent":
+                url = 'http://10.0.0.202:4000/tents/';
+                break;
+            case "Shoes":
+                url = 'http://10.0.0.202:4000/shoes/';
+                break;
+        }
+        console.log(url);
+        console.log(this.props.data._id);
+
+        axios.delete(url+this.props.data._id)
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+        this.handleClose();
+        //window.location.reload();
+    }
+
     onSubmit(e) {
-        console.log("test");
         e.preventDefault();
 
         let updatedItem = {
@@ -106,9 +134,21 @@ export default class EditItem extends Component {
             price: this.state.price
         }
         Object.assign(updatedItem, this.props.childState);
-        console.log(updatedItem);
 
-        axios.post('http://10.0.0.202:4000/backpacks/update/'+this.props.data._id, updatedItem)
+        let url;
+        switch (this.props.type) {
+            case "Backpack":
+                url = 'http://10.0.0.202:4000/backpacks/update/';
+                break;
+            case "Tent":
+                url = 'http://10.0.0.202:4000/tents/update/';
+                break;
+            case "Shoes":
+                url = 'http://10.0.0.202:4000/shoes/update/';
+                break;
+        }
+
+        axios.post(url+this.props.data._id, updatedItem)
             .then(res => {
                 console.log(res.data);
             })
@@ -117,7 +157,7 @@ export default class EditItem extends Component {
             });
 
         this.handleClose();
-        window.location.reload();
+        //window.location.reload();
     }
 
     render() {
@@ -135,8 +175,11 @@ export default class EditItem extends Component {
                             <ItemForm state={this.state} onChangeManufacturer={this.onChangeManufacturer} onChangeName={this.onChangeName} onChangeWeight={this.onChangeWeight} 
                                  onChangeWeightUnits={this.onChangeWeightUnits} onChangeHref={this.onChangeHref} onChangePrice={this.onChangePrice}></ItemForm>
                             {this.props.children}
-                            <div className="form-group" style={{marginTop: 30}}>
+                            <div className="form-group" style={{marginTop: 30, float: "right"}}>
                                 <input type="submit" value="Submit" className='btn btn-primary'/>
+                            </div>
+                            <div className="form-group" style={{marginTop: 30, float: "left"}}>
+                                <button type="button" className="btn btn-danger" onClick={this.onDelete}>Delete</button>
                             </div>
                         </form>
                     </Modal.Body>

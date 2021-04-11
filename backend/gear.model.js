@@ -69,6 +69,9 @@ let tentsSchema = new Schema({
     max_stakes: {
         type: Number
     },
+    max_people: {
+        type: Number
+    },
     length: {
         type: Number
     },
@@ -100,6 +103,12 @@ let shoesSchema = new Schema({
     href: {
         type: String
     },
+    type: {
+        type: String
+    },
+    waterproof: {
+        type: String
+    },
     stack: {
         type: Number
     },
@@ -107,6 +116,6 @@ let shoesSchema = new Schema({
         type: Number
     }
 })
-let Shoes = mongoose.model("Shoes", tentsSchema, "shoes")
+let Shoes = mongoose.model("Shoes", shoesSchema, "shoes")
 
 module.exports = {Backpacks: Backpacks, Tents: Tents, Shoes: Shoes};

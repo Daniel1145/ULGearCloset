@@ -39,7 +39,7 @@ tentsRoutes.route('/').get((req, res) => {
 });
 
 shoesRoutes.route('/').get((req, res) => {
-    Backpacks.find((err, shoes) => {
+    Shoes.find((err, shoes) => {
         if (err) {
             console.log(err);
         } else {
@@ -62,7 +62,7 @@ tentsRoutes.route('/:id').get((req, res) => {
     })
 });
 
-backpacksRoutes.route('/:id').get((req, res) => {
+shoesRoutes.route('/:id').get((req, res) => {
     let id = req.params.id;
     Shoes.findById(id, (err, shoes) => {
         res.json(shoes);
@@ -81,7 +81,8 @@ backpacksRoutes.route('/add').post((req, res) => {
 });
 
 tentsRoutes.route('/add').post((req, res) => {
-    let tenr = new Tents(req.body);
+    let tent = new Tents(req.body);
+    console.log(req.body);
     tent.save()
         .then(tent => {
             res.status(200).json({'tent': 'tent added successfully'});
@@ -143,6 +144,7 @@ tentsRoutes.route('/update/:id').post((req, res) => {
             tent.material = req.body.material;
             tent.min_stakes = req.body.min_stakes;
             tent.max_stakes = req.body.max_stakes;
+            tent.max_people = req.body.max_people;
             tent.length = req.body.length;
             tent.floor_area = req.body.floor_area;
             tent.freestanding = req.body.freestanding;
@@ -167,7 +169,8 @@ shoesRoutes.route('/update/:id').post((req, res) => {
             shoes.weight_units = req.body.weight_units;
             shoes.price = req.body.price;
             shoes.href = req.body.href;
-            shoes.stack = req.body.stack;
+            shoes.type = req.body.type;
+            shoes.waterproof = req.body.waterproof;
             shoes.drop = req.body.drop;
 
             shoes.save().then(shoes => {
@@ -177,6 +180,30 @@ shoesRoutes.route('/update/:id').post((req, res) => {
                 res.status(400).send("Updated failed");
             })
     });
+})
+
+backpacksRoutes.route('/:id').delete((req, res) => {
+    Backpacks.findByIdAndDelete(req.params.id, (err) => {
+        if (err) {
+            res.status(400).send("Delete failed");
+        }
+    })
+})
+
+tentsRoutes.route('/:id').delete((req, res) => {
+    Tents.findByIdAndDelete(req.params.id, (err) => {
+        if (err) {
+            res.status(400).send("Delete failed");
+        }
+    })
+})
+
+shoesRoutes.route('/:id').delete((req, res) => {
+    Shoes.findByIdAndDelete(req.params.id, (err) => {
+        if (err) {
+            res.status(400).send("Delete failed");
+        }
+    })
 })
 
 

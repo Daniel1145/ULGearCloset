@@ -5,6 +5,40 @@ export const WeightUnits = [
     { value: "kg", label: "kg"},
 ]
 
+export const Frames = [
+    { value: "Frame", label: "Frame" },
+    { value: "Frameless", label: "Frameless" },
+    { value: "Removable", label: "Removable" }
+];
+
+export const Hipbelts = [
+    { value: "Hipbelt", label: "Hipbelt" },
+    { value: "No Hipbelt", label: "No Hipbelt" },
+    { value: "Removable", label: "Removable" }
+]
+
+export const WallTypes = [
+    { value: "Single Wall", label: "Single Wall" },
+    { value: "Double Wall", label: "Double Wall" },
+];
+
+export const Freestanding = [
+    { value: "Freestanding", label: "Freestanding" },
+    { value: "Semi-Freestanding", label: "Semi-Freestanding" },
+    { value: "Non-Freestanding", label: "Non-Freestanding" }
+];
+
+export const ShoeTypes = [
+    { value: "Trail Runners", label: "Trail Runners" },
+    { value: "Hiking Shoes", label: "Hiking Shoes" },
+    { value: "Hiking Boots", label: "Hiking Boots" }
+]
+
+export const Waterproof = [
+    { value: "Yes", label: "Yes" },
+    { value: "No", label: "No" },
+]
+
 export const EmptySelect = { value: "", label: ""}
 
 export function convertWeight(weight, initialUnits, newUnits) {
@@ -54,4 +88,15 @@ export function convertWeight(weight, initialUnits, newUnits) {
                     return weight;
             }
     }
+}
+
+export function multiExactFilter(filterVal, data, name) {
+    if (filterVal.length !== 0) {
+        return data.filter(item => {
+            console.log(filterVal);
+            console.log(item);
+            return filterVal.includes(item[name])
+        });
+    }
+    return data;
 }

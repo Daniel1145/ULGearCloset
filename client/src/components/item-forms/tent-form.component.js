@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select'
 
-import {WallTypes, Freestanding} from '../tents-helper.component'
+import {WallTypes, Freestanding} from '../helpers'
 
 export default function TentForm(props) {
     return (
@@ -9,7 +9,7 @@ export default function TentForm(props) {
             <div className="form-group">
                 <label>Wall Type</label>
                 <div>
-                    <Select value={props.state.type} className="form-select mb-3" onChange={props.onChangeFrame} options={WallTypes}/>
+                    <Select value={props.state.wall} className="form-select mb-3" onChange={props.onChangeWall} options={WallTypes}/>
                 </div>
             </div>
 
@@ -26,6 +26,11 @@ export default function TentForm(props) {
             <div className="form-group">
                 <label>Max Stakes</label>
                 <input type="number" min="0" className="form-control" value={props.state.stakes.max} onChange={props.onChangeMaxStakes}></input>
+            </div>
+
+            <div className="form-group">
+                <label>Max People</label>
+                <input type="number" min="0" className="form-control" value={props.state.max_people} onChange={props.onChangeMaxPeople}></input>
             </div>
 
             <div className="form-group">

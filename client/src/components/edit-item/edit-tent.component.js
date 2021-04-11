@@ -12,15 +12,17 @@ export default class EditTent extends Component {
         this.onChangeMaterial = this.onChangeMaterial.bind(this);
         this.onChangeMinStakes = this.onChangeMinStakes.bind(this);
         this.onChangeMaxStakes = this.onChangeMaxStakes.bind(this);
+        this.onChangeMaxPeople = this.onChangeMaxPeople.bind(this);
         this.onChangeFloorLength = this.onChangeFloorLength.bind(this);
         this.onChangeFloorArea = this.onChangeFloorArea.bind(this);
         this.onChangeStanding = this.onChangeStanding.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.loadState = this.loadState.bind(this);
 
         this.state = {
             wall: EmptySelect,
             material: "",
             stakes: {min: 0, max: 0},
+            max_people: 0,
             length: 0,
             floor_area: 0,
             freestanding: EmptySelect
@@ -29,12 +31,13 @@ export default class EditTent extends Component {
 
     loadState() {
         this.setState({
-            wall: this.props.data.wall,
+            wall: { value: this.props.data.wall, label: this.props.data.wall },
             material: this.props.data.material,
             stakes: {min: this.props.data.min_stakes, max: this.props.data.max_stakes},
+            max_people: this.props.data.max_people,
             length: this.props.data.length,
             floor_area: this.props.data.floor_area,
-            freestanding: this.props.data.freestanding
+            freestanding: { value: this.props.data.freestanding, label: this.props.data.freestanding }
         });
     }
 
@@ -62,6 +65,12 @@ export default class EditTent extends Component {
         });
     }
 
+    onChangeMaxPeople(e) {
+        this.setState({
+            max_people: e.target.value
+        })
+    }
+
     onChangeFloorLength(e) {
         this.setState({
             length: parseInt(e.target.value)
@@ -85,6 +94,7 @@ export default class EditTent extends Component {
             wall: EmptySelect,
             material: "",
             stakes: {min: 0, max: 0},
+            max_people: 0,
             length: 0,
             floor_area: 0,
             freestanding: EmptySelect
@@ -96,6 +106,7 @@ export default class EditTent extends Component {
             wall: this.state.wall,
             material: this.state.material,
             stakes: this.state.stakes,
+            max_people: this.state.max_people,
             length: this.state.length,
             floor_area: this.state.floor_area,
             freestanding: this.state.free_standing
@@ -106,7 +117,7 @@ export default class EditTent extends Component {
         return (
             <EditItem type="Tent" childState={this.formatState()} data={this.props.data} loadState={this.loadState}>
                 <TentForm state={this.state} onChangeWall={this.onChangeWall} onChangeMaterial={this.onChangeMaterial} onChangeMinStakes={this.onChangeMinStakes} onChangeMaxStakes={this.onChangeMaxStakes} 
-                onChangeFloorLength={this.onChangeFloorLength} onChangeFloorArea={this.onChangeFloorArea} onChangeStanding={this.onChangeStanding}></TentForm>
+                onChangeMaxPeople={this.onChangeMaxPeople} onChangeFloorLength={this.onChangeFloorLength} onChangeFloorArea={this.onChangeFloorArea} onChangeStanding={this.onChangeStanding}></TentForm>
             </EditItem>
         )
     }

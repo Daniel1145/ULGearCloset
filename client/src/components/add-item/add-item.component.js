@@ -75,10 +75,29 @@ export default class AddItem extends Component {
             price: this.state.price
         }
         for (const [key, value] of Object.entries(this.props.childState)) {
+            console.log(newItem)
+            console.log(key);
+            console.log(value);
             newItem = {...newItem, [key]: value};
+            console.log(newItem);
         }
+        console.log(this.props.childState)
 
-        axios.post('http://10.0.0.202:4000/backpacks/add', newItem)
+        let url;
+        switch (this.props.type) {
+            case "Backpack":
+                url = 'http://10.0.0.202:4000/backpacks/add'
+                break;
+            case "Tent":
+                url = 'http://10.0.0.202:4000/tents/add'
+                break;
+            case "Shoes":
+                url = 'http://10.0.0.202:4000/shoes/add'
+                break;
+        }
+        console.log(newItem);
+
+        axios.post(url, newItem)
             .then(res => {
                 console.log(res.data);
             })

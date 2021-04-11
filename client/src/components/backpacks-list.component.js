@@ -9,9 +9,9 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import EditBackpack from './edit-item/edit-backpack.component';
 import TextFilter from './list-filters/text-filter.component';
 import MultiselectFilter from './list-filters/multiselect-filter.component';
-import {multiExactFilter, Frames, Hipbelts} from './backpacks-helper.component';
-import {WeightUnits, convertWeight} from './helpers'
+import {WeightUnits, convertWeight, multiExactFilter, Frames, Hipbelts, } from './helpers'
 import { MinMaxFilter, minmaxFilter } from './list-filters/minmax-filter.component';
+import './DataTable.css'
 
 const Units = [...WeightUnits, {value: "", label: "default"}];
 let Materials = [];
@@ -71,7 +71,12 @@ export default class BackpacksList extends Component {
             dataField: "name", 
             text: "Product Name", 
             sort: true, 
-            filter: textFilter(), 
+            filter: textFilter(),
+            formatter: (cell, row) => (
+                <div>
+                  <a href={row.href}> {row.name} </a>
+                </div>
+            ),
             headerFormatter: TextFilter
         }, {
             dataField: "materials", 
@@ -141,7 +146,7 @@ export default class BackpacksList extends Component {
                 { filterElement }
             </div>,
             headerStyle: (colum, colIndex) => {
-                return { width: '150px' };
+                return { width: '8%'  };
             }
         }, {
             dataField: "max_load", 
@@ -165,7 +170,7 @@ export default class BackpacksList extends Component {
                 { filterElement }
             </div>,
             headerStyle: (colum, colIndex) => {
-                return { width: '150px' };
+                return { width: '8%'  };
             }
         }, {
             dataField: "price", 
@@ -189,7 +194,7 @@ export default class BackpacksList extends Component {
                 { filterElement }
             </div>,
             headerStyle: (colum, colIndex) => {
-                return { width: '150px' };
+                return { width: '8%'  };
             }
         }, {
             dataField: "weight", 
@@ -235,18 +240,7 @@ export default class BackpacksList extends Component {
                 return aGrams - bGrams;
             },
             headerStyle: (colum, colIndex) => {
-                return { width: '150px' };
-            }
-        }, {
-            dataField: "href", 
-            text: "Link", 
-            formatter: (cell, row) => (
-                <div>
-                  <a href={row.href}> Link </a>
-                </div>
-            ),
-            headerStyle: (colum, colIndex) => {
-                return { width: '80px' };
+                return { width: '8%'  };
             }
         }, {
             dataField: "df1", 
@@ -255,15 +249,12 @@ export default class BackpacksList extends Component {
                 <div>
                     <EditBackpack data={row}/>
                 </div>
-            ),
-            headerStyle: (colum, colIndex) => {
-                return { width: '80px' };
-            }
+            )
         }];
 
         return (
             <div className='px-5'>
-                <h2 className='mb-3 ml-1'>Backpacks</h2>
+                <h2 className='mt-3'>Backpacks</h2>
                 <BootstrapTable bootstrap4 keyField='name' data={ this.state.backpacks } columns={ columns } defaultSorted= { [{dataField: 'manufacturer', order: 'desc'}]} filter={ filterFactory() }/>
             </div>
         )

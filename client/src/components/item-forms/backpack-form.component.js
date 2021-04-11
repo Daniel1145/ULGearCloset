@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select'
 
-import { Frames, Hipbelts } from '../backpacks-helper.component';
+import { Frames, Hipbelts } from '../helpers';
 
 export default function BackpackForm(props) {
     return (
