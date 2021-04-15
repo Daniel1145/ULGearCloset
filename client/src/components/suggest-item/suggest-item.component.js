@@ -4,7 +4,7 @@ import axios from 'axios';
 import { WeightUnits } from '../helpers';
 import ItemForm from '../item-forms/item-form.component';
 
-export default class AddItem extends Component {
+export default class SuggestItem extends Component {
     constructor(props) {
         super(props);
 
@@ -120,13 +120,13 @@ export default class AddItem extends Component {
     render() {
         return (
             <div style={{marginTop: 20}} className='px-5'>
-                <h3>Add New {this.props.type}</h3>
+                <h3>Suggest New {this.props.type}</h3>
                 <form onSubmit={this.onSubmit}>
                     <ItemForm state={this.state} onChangeManufacturer={this.onChangeManufacturer} onChangeName={this.onChangeName} onChangeWeight={this.onChangeWeight} 
                     onChangeWeightUnits={this.onChangeWeightUnits} onChangeHref={this.onChangeHref} onChangePrice={this.onChangePrice}></ItemForm>
                     {this.props.children}
                     <div className="form-group" style={{marginTop: 30}}>
-                        <input type="submit" value="Add Item" className='btn btn-primary'/>
+                        <input type="submit" value="Suggest Item" className='btn btn-primary'/>
                     </div>
                 </form>
             </div>

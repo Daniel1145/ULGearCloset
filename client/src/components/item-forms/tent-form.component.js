@@ -20,12 +20,12 @@ export default function TentForm(props) {
 
             <div className="form-group">
                 <label>Min Stakes</label>
-                <input type="number" min="0" className="form-control" value={props.state.stakes.min} onChange={props.onChangeMinStakes}></input>
+                <input type="number" min="0" className="form-control" value={props.state.min_stakes} onChange={props.onChangeMinStakes}></input>
             </div>
 
             <div className="form-group">
-                <label>Max Stakes</label>
-                <input type="number" min="0" className="form-control" value={props.state.stakes.max} onChange={props.onChangeMaxStakes}></input>
+                <label>Extra Tie-outs</label>
+                <input type="number" min="0" className="form-control" value={props.state.tieouts} onChange={props.onChangeTieouts}></input>
             </div>
 
             <div className="form-group">

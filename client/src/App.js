@@ -5,9 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import TentsList from "./components/tents-list.component"
 import ShoesList from "./components/shoes-list.component"
 import BackpacksList from "./components/backpacks-list.component";
-import AddBackpack from "./components/add-item/add-backpack.component";
-import AddTent from "./components/add-item/add-tent.component";
-import AddShoe from "./components/add-item/add-shoes.component";
+import SuggestBackpack from "./components/suggest-item/suggest-backpack.component";
+import SuggestTent from "./components/suggest-item/suggest-tent.component";
+import SuggestShoe from "./components/suggest-item/suggest-shoes.component";
 
 class App extends Component {
   render() {
@@ -30,12 +30,12 @@ class App extends Component {
                 </li>
                 <li className="nav-item dropdown">
                   <a className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-expanded="false" href="#">
-                    Add Item
+                    Suggest Item
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <li><Link to="/add/backpacks" className="nav-link">Add Backpack</Link></li>
-                    <li><Link to="/add/tents" className="nav-link">Add Tent</Link></li>
-                    <li><Link to="/add/shoes" className="nav-link">Add Shoes</Link></li>
+                    <li><Link to="/suggest/backpacks" className="nav-link">Suggest Backpack</Link></li>
+                    <li><Link to="/suggest/tents" className="nav-link">Suggest Tent</Link></li>
+                    <li><Link to="/suggest/shoes" className="nav-link">Suggest Shoes</Link></li>
                   </div>
                 </li>
               </ul>
@@ -45,9 +45,9 @@ class App extends Component {
           <Route path="/tents" component={TentsList} />
           <Route path="/shoes" component={ShoesList} />
           <Route path="/backpacks" component={BackpacksList} />
-          <Route path="/add/tents" component={AddTent} />
-          <Route path="/add/shoes" component={AddShoe} />
-          <Route path="/add/backpacks" component={AddBackpack} />
+          <Route path="/suggest/tents" component={SuggestTent} />
+          <Route path="/suggest/shoes" component={SuggestShoe} />
+          <Route path="/suggest/backpacks" component={SuggestBackpack} />
         </div>
       </Router>
     );

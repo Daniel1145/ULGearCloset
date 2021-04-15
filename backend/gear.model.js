@@ -37,6 +37,7 @@ let backpacksSchema = new Schema({
     }
 });
 let Backpacks = mongoose.model("Backpacks", backpacksSchema, "backpacks");
+let BackpackSuggestions = mongoose.model("BackpackSuggestions", backpacksSchema, "backpacksuggestions")
 
 let tentsSchema = new Schema({
     manufacturer: {
@@ -83,6 +84,7 @@ let tentsSchema = new Schema({
     }
 })
 let Tents = mongoose.model("Tents", tentsSchema, "tents")
+let TentSuggestions = mongoose.model("TentSuggestions", tentsSchema, "tentsuggestions")
 
 let shoesSchema = new Schema({
     manufacturer: {
@@ -117,5 +119,6 @@ let shoesSchema = new Schema({
     }
 })
 let Shoes = mongoose.model("Shoes", shoesSchema, "shoes")
+let ShoeSuggestions = mongoose.model("ShoeSuggestions", shoesSchema, "shoesuggestions")
 
-module.exports = {Backpacks: Backpacks, Tents: Tents, Shoes: Shoes};
+module.exports = {Backpacks, Tents, Shoes, BackpackSuggestions, TentSuggestions, ShoeSuggestions};

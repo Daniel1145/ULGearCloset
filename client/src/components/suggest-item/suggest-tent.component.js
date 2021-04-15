@@ -1,44 +1,33 @@
 import React, {Component} from 'react';
 
-import EditItem from './edit-item.component';
+import SuggestItem from './suggest-item.component';
 import {EmptySelect} from '../helpers';
 import TentForm from '../item-forms/tent-form.component';
 
-export default class EditTent extends Component {
+export default class SuggestTent extends Component {
     constructor(props) {
         super(props);
 
         this.onChangeWall = this.onChangeWall.bind(this);
         this.onChangeMaterial = this.onChangeMaterial.bind(this);
         this.onChangeMinStakes = this.onChangeMinStakes.bind(this);
-        this.onChangeMaxStakes = this.onChangeMaxStakes.bind(this);
+        this.onChangeTieouts = this.onChangeTieouts.bind(this);
         this.onChangeMaxPeople = this.onChangeMaxPeople.bind(this);
         this.onChangeFloorLength = this.onChangeFloorLength.bind(this);
         this.onChangeFloorArea = this.onChangeFloorArea.bind(this);
         this.onChangeStanding = this.onChangeStanding.bind(this);
-        this.loadState = this.loadState.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
             wall: EmptySelect,
             material: "",
-            stakes: {min: 0, max: 0},
+            min_stakes: 0,
+            tieouts: 0,
             max_people: 0,
             length: 0,
             floor_area: 0,
             freestanding: EmptySelect
         }
-    }
-
-    loadState() {
-        this.setState({
-            wall: { value: this.props.data.wall, label: this.props.data.wall },
-            material: this.props.data.material,
-            stakes: {min: this.props.data.min_stakes, max: this.props.data.max_stakes},
-            max_people: this.props.data.max_people,
-            length: this.props.data.length,
-            floor_area: this.props.data.floor_area,
-            freestanding: { value: this.props.data.freestanding, label: this.props.data.freestanding }
-        });
     }
 
     onChangeWall(val) {
@@ -55,13 +44,13 @@ export default class EditTent extends Component {
 
     onChangeMinStakes(e) {
         this.setState({
-            stakes: {min: parseInt(e.target.value), max: this.state.stakes.max}
+            min_stakes: e.target.value
         });
     }
 
-    onChangeMaxStakes(e) {
+    onChangeTieouts(e) {
         this.setState({
-            stakes: {min: this.state.stakes.min, max: parseInt(e.target.value)}
+            tieouts: e.target.value
         });
     }
 
@@ -73,13 +62,13 @@ export default class EditTent extends Component {
 
     onChangeFloorLength(e) {
         this.setState({
-            length: parseInt(e.target.value)
+            length: e.target.value
         });
     }
 
     onChangeFloorArea(e) {
         this.setState({
-            floor_area: parseInt(e.target.value)
+            floor_area: e.target.value
         });
     }
 
@@ -93,7 +82,8 @@ export default class EditTent extends Component {
         this.setState({
             wall: EmptySelect,
             material: "",
-            stakes: {min: 0, max: 0},
+            min_stakes: 0,
+            tieouts: 0,
             max_people: 0,
             length: 0,
             floor_area: 0,
@@ -103,22 +93,23 @@ export default class EditTent extends Component {
 
     formatState() {
         return {
-            wall: this.state.wall,
+            wall: this.state.wall.value,
             material: this.state.material,
-            stakes: this.state.stakes,
+            min_stakes: this.state.min_stakes,
+            tieouts: this.state.tieouts,
             max_people: this.state.max_people,
             length: this.state.length,
             floor_area: this.state.floor_area,
-            freestanding: this.state.free_standing
+            freestanding: this.state.freestanding.value
         }
     }
 
     render() {
         return (
-            <EditItem type="Tent" childState={this.formatState()} data={this.props.data} loadState={this.loadState}>
-                <TentForm state={this.state} onChangeWall={this.onChangeWall} onChangeMaterial={this.onChangeMaterial} onChangeMinStakes={this.onChangeMinStakes} onChangeMaxStakes={this.onChangeMaxStakes} 
+            <SuggestItem type="Tent" childState={this.formatState()} onSubmit={this.onSubmit}>
+                <TentForm state={this.state} onChangeWall={this.onChangeWall} onChangeMaterial={this.onChangeMaterial} onChangeMinStakes={this.onChangeMinStakes} onChangeTieouts={this.onChangeTieouts} 
                 onChangeMaxPeople={this.onChangeMaxPeople} onChangeFloorLength={this.onChangeFloorLength} onChangeFloorArea={this.onChangeFloorArea} onChangeStanding={this.onChangeStanding}></TentForm>
-            </EditItem>
+            </SuggestItem>
         )
     }
 }

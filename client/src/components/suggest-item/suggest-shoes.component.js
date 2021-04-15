@@ -1,30 +1,22 @@
 import React, {Component} from 'react';
 
-import EditItem from './edit-item.component';
+import SuggestItem from './suggest-item.component';
 import ShoesForm from '../item-forms/shoes-form.component';
 
-export default class EditShoes extends Component {
+export default class SuggestShoes extends Component {
     constructor(props) {
         super(props);
 
         this.onChangeType = this.onChangeType.bind(this);
         this.onChangeWaterproof = this.onChangeWaterproof.bind(this);
         this.onChangeDrop = this.onChangeDrop.bind(this);
-        this.loadState = this.loadState.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
             type: "",
             waterproof: "",
             drop: 0
         }
-    }
-
-    loadState() {
-        this.setState({
-            type: { value: this.props.data.type, label: this.props.data.type },
-            waterproof: { value: this.props.data.waterproof, label: this.props.data.waterproof },
-            drop: this.props.data.drop
-        });
     }
 
     onChangeType(val) {
@@ -55,18 +47,18 @@ export default class EditShoes extends Component {
 
     formatState() {
         return {
-            type: this.state.type,
-            waterproof: this.state.waterproof,
+            type: this.state.type.value,
+            waterproof: this.state.waterproof.value,
             drop: this.state.drop
         }
     }
 
     render() {
         return (
-            <EditItem type="Shoes" childState={this.formatState()} data={this.props.data} loadState={this.loadState}>
+            <SuggestItem type="Shoes" childState={this.formatState()} onSubmit={this.onSubmit}>
                 <ShoesForm state={this.state} onChangeType={this.onChangeType} onChangeWaterproof={this.onChangeWaterproof} 
                 onChangeDrop={this.onChangeDrop}></ShoesForm>
-            </EditItem>
+            </SuggestItem>
         )
     }
 }

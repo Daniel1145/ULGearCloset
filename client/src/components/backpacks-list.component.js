@@ -6,7 +6,6 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { customFilter, FILTER_TYPES, textFilter } from 'react-bootstrap-table2-filter';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
-import EditBackpack from './edit-item/edit-backpack.component';
 import TextFilter from './list-filters/text-filter.component';
 import MultiselectFilter from './list-filters/multiselect-filter.component';
 import {WeightUnits, convertWeight, multiExactFilter, Frames, Hipbelts, } from './helpers'
@@ -163,7 +162,7 @@ export default class BackpacksList extends Component {
                 }
             }), 
             filterRenderer: (onFilter, column) =>
-                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "max_load" }/>,
+                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "max load" }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
@@ -242,20 +241,18 @@ export default class BackpacksList extends Component {
             headerStyle: (colum, colIndex) => {
                 return { width: '8%'  };
             }
-        }, {
-            dataField: "df1", 
-            text: "", 
-            formatter: (cell, row) => (
-                <div>
-                    <EditBackpack data={row}/>
-                </div>
-            )
         }];
+
+        const selectRow = {
+            clickToSelect: true,
+            bgColor: '#D0D0D0',
+            hideSelectColumn: true
+          };
 
         return (
             <div className='px-5'>
                 <h2 className='mt-3'>Backpacks</h2>
-                <BootstrapTable bootstrap4 keyField='name' data={ this.state.backpacks } columns={ columns } defaultSorted= { [{dataField: 'manufacturer', order: 'desc'}]} filter={ filterFactory() }/>
+                <BootstrapTable bootstrap4 keyField='name' data={ this.state.backpacks } columns={ columns } defaultSorted= { [{dataField: 'manufacturer', order: 'desc'}] } filter={ filterFactory() } selectRow={ selectRow }/>
             </div>
         )
     }

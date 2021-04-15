@@ -6,7 +6,6 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { customFilter, textFilter } from 'react-bootstrap-table2-filter';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
-import EditShoes from './edit-item/edit-shoes.component';
 import TextFilter from './list-filters/text-filter.component';
 import MultiselectFilter from './list-filters/multiselect-filter.component';
 import {WeightUnits, ShoeTypes, Waterproof, convertWeight, multiExactFilter,  } from './helpers'
@@ -194,14 +193,6 @@ export default class ShoesList extends Component {
             headerStyle: (colum, colIndex) => {
                 return { width: '8%'  };
             }
-        }, {
-            dataField: "df1", 
-            text: "", 
-            formatter: (cell, row) => (
-                <div>
-                    <EditShoes data={row}/>
-                </div>
-            )
         }];
 
         return (

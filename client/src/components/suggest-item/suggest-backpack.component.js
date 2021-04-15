@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 
-import EditItem from './edit-item.component';
-import { EmptySelect } from '../helpers'
+import SuggestItem from './suggest-item.component';
+import { EmptySelect } from '../helpers';
 import BackpackForm from '../item-forms/backpack-form.component';
 
-export default class EditBackpack extends Component {
+export default class SuggestBackpack extends Component {
     constructor(props) {
         super(props);
 
@@ -13,25 +13,15 @@ export default class EditBackpack extends Component {
         this.onChangeFrame = this.onChangeFrame.bind(this);
         this.onChangeHipbelt = this.onChangeHipbelt.bind(this);
         this.onChangeMaxLoad = this.onChangeMaxLoad.bind(this);
-        this.loadState = this.loadState.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
-            materials: '',
+            materials: "",
             volume: 0,
             frame: EmptySelect,
             hipbelt: EmptySelect,
             max_load: 0
         }
-    }
-
-    loadState() {
-        this.setState({
-            materials: this.props.data.materials,
-            volume: this.props.data.volume,
-            frame: { value: this.props.data.frame, label: this.props.data.frame },
-            hipbelt: { value: this.props.data.hipbelt, label: this.props.data.hipbelt },
-            max_load: this.props.data.max_load
-        });
     }
 
     onChangeMaterials(e) {
@@ -42,7 +32,7 @@ export default class EditBackpack extends Component {
 
     onChangeVolume(e) {
         this.setState({
-            volume: parseInt(e.target.value)
+            volume: e.target.value
         });
     }
 
@@ -60,8 +50,18 @@ export default class EditBackpack extends Component {
 
     onChangeMaxLoad(e) {
         this.setState({
-            max_load: parseInt(e.target.value)
+            max_load: e.target.value
         });
+    }
+
+    onSubmit(e) {
+        this.setState({
+            materials: EmptySelect,
+            volume: 0,
+            frame: EmptySelect,
+            hipbelt: EmptySelect,
+            max_load: 0
+        })
     }
 
     formatState() {
@@ -76,10 +76,10 @@ export default class EditBackpack extends Component {
 
     render() {
         return (
-            <EditItem type="Backpack" childState={this.formatState()} data={this.props.data} loadState={this.loadState}>
+            <SuggestItem type="Backpack" childState={this.formatState()} onSubmit={this.onSubmit}>
                 <BackpackForm state={this.state} onChangeMaterials={this.onChangeMaterials} onChangeVolume={this.onChangeVolume} 
                 onChangeFrame={this.onChangeFrame} onChangeHipbelt={this.onChangeHipbelt} onChangeMaxLoad={this.onChangeMaxLoad}></BackpackForm>
-            </EditItem>
+            </SuggestItem>
         )
     }
 }

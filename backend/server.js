@@ -6,7 +6,7 @@ const backpacksRoutes = express.Router();
 const tentsRoutes = express.Router();
 const shoesRoutes = express.Router();
 const PORT = 4000;
-const {Backpacks, Tents, Shoes} = require('./gear.model');
+const {Backpacks, Tents, Shoes, BackpackSuggestions, TentSuggestions, ShoeSuggestions} = require('./gear.model');
 
 app.use(cors());
 app.use(express.json());
@@ -69,143 +69,39 @@ shoesRoutes.route('/:id').get((req, res) => {
     })
 });
 
-backpacksRoutes.route('/add').post((req, res) => {
-    let backpack = new Backpacks(req.body);
+backpacksRoutes.route('/suggest').post((req, res) => {
+    let backpack = new BackpackSuggestions(req.body);
     backpack.save()
         .then(backpack => {
-            res.status(200).json({'backpack': 'backpack added successfully'});
+            res.status(200).json({'backpack': 'backpack suggestion added successfully'});
         })
         .catch(err => {
             res.status(400).send('adding new backpack failed');
         })
 });
 
-tentsRoutes.route('/add').post((req, res) => {
-    let tent = new Tents(req.body);
+tentsRoutes.route('/suggest').post((req, res) => {
+    let tent = new TentSuggestions(req.body);
     console.log(req.body);
     tent.save()
         .then(tent => {
-            res.status(200).json({'tent': 'tent added successfully'});
+            res.status(200).json({'tent': 'tent suggestion added successfully'});
         })
         .catch(err => {
             res.status(400).send('adding new tent failed');
         })
 });
 
-shoesRoutes.route('/add').post((req, res) => {
-    let shoes = new Shoes(req.body);
+shoesRoutes.route('/suggest').post((req, res) => {
+    let shoes = new ShoeSuggestions(req.body);
     shoes.save()
         .then(shoes => {
-            res.status(200).json({'shoes': 'shoes added successfully'});
+            res.status(200).json({'shoes': 'shoes suggestion added successfully'});
         })
         .catch(err => {
             res.status(400).send('adding new shoes failed');
         })
 });
-
-backpacksRoutes.route('/update/:id').post((req, res) => {
-    Backpacks.findById(req.params.id, (err, backpack) => {
-        if (!backpack)
-            res.status(404).send('backpack not found');
-        else
-            backpack.manufacturer = req.body.manufacturer;
-            backpack.name = req.body.name;
-            backpack.weight = req.body.weight;
-            backpack.weight_units = req.body.weight_units;
-            backpack.price = req.body.price;
-            backpack.materials = req.body.materials;
-            backpack.volume = req.body.volume;
-            backpack.frame = req.body.frame;
-            backpack.hipbelt = req.body.hipbelt;
-            backpack.href = req.body.href;
-            backpack.max_load = req.body.max_load;
-
-            backpack.save().then(backpack => {
-                res.status(200).json('Backpack updated');
-            })
-            .catch(err => {
-                res.status(400).send("Updated failed");
-            })
-    });
-})
-
-tentsRoutes.route('/update/:id').post((req, res) => {
-    Tents.findById(req.params.id, (err, tent) => {
-        if (!tent)
-            res.status(404).send('tent not found');
-        else
-            tent.manufacturer = req.body.manufacturer;
-            tent.name = req.body.name;
-            tent.weight = req.body.weight;
-            tent.weight_units = req.body.weight_units;
-            tent.price = req.body.price;
-            tent.href = req.body.href;
-            tent.wall = req.body.wall;
-            tent.material = req.body.material;
-            tent.min_stakes = req.body.min_stakes;
-            tent.max_stakes = req.body.max_stakes;
-            tent.max_people = req.body.max_people;
-            tent.length = req.body.length;
-            tent.floor_area = req.body.floor_area;
-            tent.freestanding = req.body.freestanding;
-
-            tent.save().then(tent => {
-                res.status(200).json('Tent updated');
-            })
-            .catch(err => {
-                res.status(400).send("Updated failed");
-            })
-    });
-})
-
-shoesRoutes.route('/update/:id').post((req, res) => {
-    Shoes.findById(req.params.id, (err, shoes) => {
-        if (!shoes)
-            res.status(404).send('shoes not found');
-        else
-            shoes.manufacturer = req.body.manufacturer;
-            shoes.name = req.body.name;
-            shoes.weight = req.body.weight;
-            shoes.weight_units = req.body.weight_units;
-            shoes.price = req.body.price;
-            shoes.href = req.body.href;
-            shoes.type = req.body.type;
-            shoes.waterproof = req.body.waterproof;
-            shoes.drop = req.body.drop;
-
-            shoes.save().then(shoes => {
-                res.status(200).json('Shoes updated');
-            })
-            .catch(err => {
-                res.status(400).send("Updated failed");
-            })
-    });
-})
-
-backpacksRoutes.route('/:id').delete((req, res) => {
-    Backpacks.findByIdAndDelete(req.params.id, (err) => {
-        if (err) {
-            res.status(400).send("Delete failed");
-        }
-    })
-})
-
-tentsRoutes.route('/:id').delete((req, res) => {
-    Tents.findByIdAndDelete(req.params.id, (err) => {
-        if (err) {
-            res.status(400).send("Delete failed");
-        }
-    })
-})
-
-shoesRoutes.route('/:id').delete((req, res) => {
-    Shoes.findByIdAndDelete(req.params.id, (err) => {
-        if (err) {
-            res.status(400).send("Delete failed");
-        }
-    })
-})
-
 
 app.use('/backpacks', backpacksRoutes);
 app.use('/tents', tentsRoutes);

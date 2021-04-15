@@ -6,7 +6,6 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { customFilter, FILTER_TYPES, textFilter } from 'react-bootstrap-table2-filter';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
-import EditTent from './edit-item/edit-tent.component';
 import TextFilter from './list-filters/text-filter.component';
 import MultiselectFilter from './list-filters/multiselect-filter.component';
 import {WeightUnits, WallTypes, Freestanding, convertWeight, multiExactFilter,  } from './helpers'
@@ -113,7 +112,7 @@ export default class TentsList extends Component {
                 }
             }), 
             filterRenderer: (onFilter, column) =>
-                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "min_stakes" }/>,
+                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "min stakes" }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
@@ -123,16 +122,16 @@ export default class TentsList extends Component {
                 return { width: '6%'  };
             }
         }, {
-            dataField: "max_stakes", 
-            text: "Max Stakes", 
+            dataField: "tieouts", 
+            text: "Extra Tieouts", 
             sort: true,
             filter: customFilter({
                 onFilter: (filterVal, data) => {
-                    return minmaxFilter(filterVal, data, "max_stakes");
+                    return minmaxFilter(filterVal, data, "tieouts");
                 }
             }), 
             filterRenderer: (onFilter, column) =>
-                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "max_stakes" }/>,
+                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "tieouts" }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
@@ -151,7 +150,7 @@ export default class TentsList extends Component {
                 }
             }), 
             filterRenderer: (onFilter, column) =>
-                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "max_people" }/>,
+                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "max people" }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
@@ -199,7 +198,7 @@ export default class TentsList extends Component {
                 }
             }), 
             filterRenderer: (onFilter, column) =>
-                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "floor_area" }/>,
+                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "floor area" }/>,
             headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
             <div style={ { display: 'flex', flexDirection: 'column' } }>
                 <Row className="ml-1">{ column.text }{ sortElement }</Row>
@@ -294,14 +293,6 @@ export default class TentsList extends Component {
             headerStyle: (colum, colIndex) => {
                 return { width: '8%'  };
             }
-        }, {
-            dataField: "df1", 
-            text: "", 
-            formatter: (cell, row) => (
-                <div>
-                    <EditTent data={row}/>
-                </div>
-            )
         }];
 
         return (
