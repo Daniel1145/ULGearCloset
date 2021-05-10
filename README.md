@@ -11,4 +11,3 @@ for adding, deleting, and editing the items. It also lists the item suggestions,
 - MongoDB
 - Axios
 - Bootstrap
-- react-bootstrap-table2
