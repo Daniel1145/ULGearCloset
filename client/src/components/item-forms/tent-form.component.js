@@ -29,11 +29,6 @@ export default function TentForm(props) {
             </div>
 
             <div className="form-group">
-                <label>Max People</label>
-                <input type="number" min="0" className="form-control" value={props.state.max_people} onChange={props.onChangeMaxPeople}></input>
-            </div>
-
-            <div className="form-group">
                 <label>Floor Length</label>
                 <div className="input-group">
                     <input type="number" min="0" step="0.1" data-number-to-fixed="1" className="form-control" value={props.state.length} onChange={props.onChangeFloorLength}></input>

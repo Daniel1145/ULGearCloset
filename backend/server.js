@@ -1,22 +1,51 @@
+require('dotenv').config({ path: "./process.env" });
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const AdminBro = require("admin-bro");
+const AdminExpress = require("@admin-bro/express");
+const AdminMongoose = require("@admin-bro/mongoose");
+const {Backpacks, Tents, Shoes, BackpackSuggestions, TentSuggestions, ShoeSuggestions} = require('./gear.model');
+
+const app = express();
 const backpacksRoutes = express.Router();
 const tentsRoutes = express.Router();
 const shoesRoutes = express.Router();
-const PORT = 4000;
-const {Backpacks, Tents, Shoes, BackpackSuggestions, TentSuggestions, ShoeSuggestions} = require('./gear.model');
+
+const PORT = process.env.PORT || 4000;
+const ADMIN = {
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
+}
+
+AdminBro.registerAdapter(AdminMongoose);
 
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/gear', { useNewUrlParser: true });
-const connection = mongoose.connection;
+const run = async () => {
+    const gearDb = await mongoose.connect(process.env.MONGODB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
 
-connection.once('open', () => {
-    console.log("MongoDB database connection established successfully")
-})
+    const adminPanel = new AdminBro({
+        databases: [gearDb],
+        rootPath: '/admin',
+    })
+    
+    const adminRouter = AdminExpress.buildAuthenticatedRouter(adminPanel, {
+        authenticate: async (email, password) => {
+            if (ADMIN.email === email && ADMIN.password === password) {
+                return ADMIN;
+            }
+            return null;
+        },
+        cookieName: 'adminpanel',
+        cookiePassword: process.env.COOKIE_PASSWORD,
+    })
+
+    app.use(adminPanel.options.rootPath, adminRouter)
+}
+
+run();
 
 backpacksRoutes.route('/').get((req, res) => {
     Backpacks.find((err, backpacks) => {

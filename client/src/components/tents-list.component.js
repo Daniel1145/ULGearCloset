@@ -141,25 +141,6 @@ export default class TentsList extends Component {
                 return { width: '6%'  };
             }
         }, {
-            dataField: "max_people", 
-            text: "Max People", 
-            sort: true,
-            filter: customFilter({
-                onFilter: (filterVal, data) => {
-                    return minmaxFilter(filterVal, data, "max_people");
-                }
-            }), 
-            filterRenderer: (onFilter, column) =>
-                <MinMaxFilter onFilter={ onFilter } column = { column } name={ "max people" }/>,
-            headerFormatter: (column, colIndex, { sortElement, filterElement }) => 
-            <div style={ { display: 'flex', flexDirection: 'column' } }>
-                <Row className="ml-1">{ column.text }{ sortElement }</Row>
-                { filterElement }
-            </div>,
-            headerStyle: (colum, colIndex) => {
-                return { width: '6%'  };
-            }
-        }, {
             dataField: "length", 
             text: "Length", 
             formatter: (cell, row) => (

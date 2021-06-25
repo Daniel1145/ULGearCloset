@@ -12,7 +12,6 @@ export default class SuggestTent extends Component {
         this.onChangeMaterial = this.onChangeMaterial.bind(this);
         this.onChangeMinStakes = this.onChangeMinStakes.bind(this);
         this.onChangeTieouts = this.onChangeTieouts.bind(this);
-        this.onChangeMaxPeople = this.onChangeMaxPeople.bind(this);
         this.onChangeFloorLength = this.onChangeFloorLength.bind(this);
         this.onChangeFloorArea = this.onChangeFloorArea.bind(this);
         this.onChangeStanding = this.onChangeStanding.bind(this);
@@ -23,7 +22,6 @@ export default class SuggestTent extends Component {
             material: "",
             min_stakes: 0,
             tieouts: 0,
-            max_people: 0,
             length: 0,
             floor_area: 0,
             freestanding: EmptySelect
@@ -54,12 +52,6 @@ export default class SuggestTent extends Component {
         });
     }
 
-    onChangeMaxPeople(e) {
-        this.setState({
-            max_people: e.target.value
-        })
-    }
-
     onChangeFloorLength(e) {
         this.setState({
             length: e.target.value
@@ -84,7 +76,6 @@ export default class SuggestTent extends Component {
             material: "",
             min_stakes: 0,
             tieouts: 0,
-            max_people: 0,
             length: 0,
             floor_area: 0,
             freestanding: EmptySelect
@@ -97,7 +88,6 @@ export default class SuggestTent extends Component {
             material: this.state.material,
             min_stakes: this.state.min_stakes,
             tieouts: this.state.tieouts,
-            max_people: this.state.max_people,
             length: this.state.length,
             floor_area: this.state.floor_area,
             freestanding: this.state.freestanding.value
@@ -108,7 +98,7 @@ export default class SuggestTent extends Component {
         return (
             <SuggestItem type="Tent" childState={this.formatState()} onSubmit={this.onSubmit}>
                 <TentForm state={this.state} onChangeWall={this.onChangeWall} onChangeMaterial={this.onChangeMaterial} onChangeMinStakes={this.onChangeMinStakes} onChangeTieouts={this.onChangeTieouts} 
-                onChangeMaxPeople={this.onChangeMaxPeople} onChangeFloorLength={this.onChangeFloorLength} onChangeFloorArea={this.onChangeFloorArea} onChangeStanding={this.onChangeStanding}></TentForm>
+                onChangeFloorLength={this.onChangeFloorLength} onChangeFloorArea={this.onChangeFloorArea} onChangeStanding={this.onChangeStanding}></TentForm>
             </SuggestItem>
         )
     }
